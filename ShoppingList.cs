@@ -17,7 +17,16 @@ class ShoppingList
     // Removes the item the user sees as number 1, 2, 3 ...
     public void RemoveAt(int number)
     {
+        // FEL: Programmet kraschade  med System.ArgumentOutOfRangeException när jag skrev in högre siffra
+        //  än antalet varor för att "ta bort" en vara i listan.
+        // ORSAK: RemoveAt(number - 1) kördes utan att kolla om numret fanns i listan.
+        // När number var störrre än antalet varor pekade number -1 på en plats som inte fanns.
+        // LÖSNING: if-satsen kollar om numret är giltigt och tar bort varan om det stämmer. 
+        // Om numret är ogiltigt händer inget.
+        if (number >= 1 && number <= items.Count)
+        {
         items.RemoveAt(number - 1);
+        }
     }
 
     // Adds up the price of every item on the list.
@@ -25,7 +34,7 @@ class ShoppingList
     {
         int sum = 0;
 
-        // FEL: Programmey kraschade inte, men totala summan anger fel värde, 121 kr istället 136 kr.
+        // FEL: Programmet kraschade inte, men totala summan anger fel värde, 121 kr istället 136 kr.
         // ORSAK: int i = 1 gjorde att räkningen började från plats 1 istället för att börja från plats 0 i inköpslistan
         //        vilket resulterade i att "mjölk 15 kr" missades helt.
         // LÖSNING: ändrade i = 1 till i = 0 för att första varan (plats 0) ska räknas med.
