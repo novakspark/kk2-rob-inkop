@@ -25,7 +25,11 @@ class ShoppingList
     {
         int sum = 0;
 
-        for (int i = 1; i < items.Count; i++)
+        // FEL: Programmey kraschade inte, men totala summan anger fel värde, 121 kr istället 136 kr.
+        // ORSAK: int i = 1 gjorde att räkningen började från plats 1 istället för att börja från plats 0 i inköpslistan
+        //        vilket resulterade i att "mjölk 15 kr" missades helt.
+        // LÖSNING: ändrade i = 1 till i = 0 för att första varan (plats 0) ska räknas med.
+        for (int i = 0; i < items.Count; i++)
         {
             sum += items[i].Price;
         }
