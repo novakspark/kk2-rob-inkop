@@ -13,7 +13,7 @@ while (true)
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
 
-    // FEL: Programmet kraschade bnär jag skrev "två" istället för en siffra i menyn.
+    // FEL: Programmet kraschade när jag skrev "två" istället för en siffra i menyn.
     // ORSAK: int.Parse kastar ett undantag när texten inte går att göra om till heltal, och inget fångas.
     // LÖSNING: int.TryParse svarar antingen true eller false istället för att krascha.
     // Meddelandet "Använd siffror." visas om man skriver talet i text, och continue tar dig tillbaka till menyn.
@@ -28,13 +28,30 @@ while (true)
         Console.Write("Namn: ");
         string name = Console.ReadLine();
         Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine());
+
+        // FEL: Kraschade när jag skrev text som pris.
+        // ORSAK: int.Parse kastar ett undantag när texten inte går att göra om till heltal.
+        // LÖSNING: int.TryParse svarar antingen true eller false istället för att krascha.
+        // Vid false visas meddelande och continue tar dig tillbaka till menyn utan att varan läggs till.
+        if (!int.TryParse(Console.ReadLine(), out int price))
+        {
+            Console.WriteLine("Använd siffror.");
+            continue;
+        }
         list.Add(new Item(name, price));
     }
     else if (choice == 2)
     {
         Console.Write("Nummer: ");
-        int number = int.Parse(Console.ReadLine());
+
+        // FEL: Samma krasch som när jag skrev text som nummer vid borttagning.
+        // ORSAK: samma som för priset, int.Parse kan inte tolka inskrivna texten.
+        // LÖSNING: Samma som för priset, int.TryParse och continue.
+        if (!int.TryParse(Console.ReadLine(), out int number))
+        {
+            Console.WriteLine("Använd siffror.");
+            continue;
+        }
         list.RemoveAt(number);
     }
     else if (choice == 3)
