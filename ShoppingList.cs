@@ -86,6 +86,16 @@ class ShoppingList
 
         foreach (string line in lines)
         {
+            // FEL: Programmet kraschade direkt vid start med IndexOutOfRangeException i Load () på rad 90.
+            // ORSAK: items.txt avslutas med radbrytning och därför ger Split en tom sista rad.
+            //        Den tomma raden har inget ";", så bara en plats finns för parts 0.
+            //        Rad 90 förösker hämta parts 1, som inte finns, därför uppstår IndexOutOfRangeException.
+            // Lösning: Kollar med string.IsNullOrWhiteSpace(line) om raden är tom, om den är det hoppar jag över med continue
+            //          för att part 1 aldrig hämtas.
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
             string[] parts = line.Split(';');
             items.Add(new Item(parts[1], int.Parse(parts[0])));
         }
