@@ -13,7 +13,15 @@ while (true)
     Console.WriteLine("5. Avsluta");
     Console.Write("Välj: ");
 
-    int choice = int.Parse(Console.ReadLine());
+    // FEL: Programmet kraschade bnär jag skrev "två" istället för en siffra i menyn.
+    // ORSAK: int.Parse kastar ett undantag när texten inte går att göra om till heltal, och inget fångas.
+    // LÖSNING: int.TryParse svarar antingen true eller false istället för att krascha.
+    // Meddelandet "Använd siffror." visas om man skriver talet i text, och continue tar dig tillbaka till menyn.
+    if (!int.TryParse(Console.ReadLine(), out int choice))
+    {
+        Console.WriteLine("Använd siffor.");
+        continue;
+    }
 
     if (choice == 1)
     {
