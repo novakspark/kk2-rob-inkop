@@ -80,15 +80,23 @@ class ShoppingList
             lines.Add($"{item.Price};{item.Name}");
         }
 
+        // FEL: Save() dolde fel med en tom catch och skrev "Listan är sparad" även när det misslyckades.
+        // ORSAK: catch-blocket var tomt och meddelandet låg utanför try, så det skrevs alltid ut.
+        // LÖSNING: Meddelandet ligger i try (visas bara om skrivningen lyckades) och specifika catch
+        //          för IOException och UnauthorizedAccessException skriver ut vad som gick fel.
         try
         {
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
+            Console.WriteLine("Listan är sparad.");
         }
-        catch
+        catch (IOException ex)
         {
+            Console.WriteLine($"Kunde inte spara listan: {ex.Message}");
         }
-
-        Console.WriteLine("Listan är sparad.");
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine($"Saknar behörighet att spara listan: {ex.Message}");
+        }
     }
 
     // Reads the file back into the list.
