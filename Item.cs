@@ -6,6 +6,16 @@ class Item
 
     public Item(string name, int price)
     {
+        // Ett ogiltigt objekt ska aldrig kunna skapas, så vi kontrollerar innan något sparas.
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Namnet får inte vara tomt.", nameof(name));
+        }
+
+        if (price < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(price), "Priset får inte vara negativt.");
+        }
         Name = name;
         Price = price;
     }
