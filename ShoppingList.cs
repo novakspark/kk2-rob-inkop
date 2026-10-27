@@ -25,7 +25,7 @@ class ShoppingList
         // Om numret är ogiltigt händer inget.
         if (number >= 1 && number <= items.Count)
         {
-        items.RemoveAt(number - 1);
+            items.RemoveAt(number - 1);
         }
     }
 
@@ -94,6 +94,13 @@ class ShoppingList
     // Reads the file back into the list.
     public void Load()
     {
+        // FEL: Programmet kraschade med FileNotFoundException om items.txt saknades.
+        // ORSAK: File.ReadAllText kastar undantag när filen inte finns och inget kontrollerade det.
+        // LÖSNING: File.Exists kollar först. Saknas filen avslutar Load() och listan börjar tom.
+        if (!File.Exists(path))
+        {
+            return;
+        }
         string text = File.ReadAllText(path);
         string[] lines = text.Split('\n');
 
