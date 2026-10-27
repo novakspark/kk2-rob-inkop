@@ -38,7 +38,25 @@ while (true)
             Console.WriteLine("Använd siffror.");
             continue;
         }
-        list.Add(new Item(name, price));
+        // Item kastar undantag vid tomt namn eller negativt pris. Vi fångar dem här
+// och visar ett tydligt meddelande i stället för att krascha.
+Item item;
+
+try
+{
+    item = new Item(name, price);
+}
+catch (ArgumentException ex)
+{
+    Console.WriteLine($"Ogiltig vara: {ex.Message}");
+    continue;
+}
+
+// Add returnerar false om varan skulle spräcka budgettaket.
+if (!list.Add(item))
+{
+    Console.WriteLine("Varan ryms inte inom budgeten och lades inte till.");
+}
     }
     else if (choice == 2)
     {
